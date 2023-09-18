@@ -1,9 +1,22 @@
-import { useNavigate, Form, useActionData, redirect } from "react-router-dom";
+import { useNavigate, Form, useLoaderData, useActionData, redirect } from "react-router-dom";
+import { getCustomer, updateCustomer } from "../data/customers";
 import FormNewCustomer from "../components/FormNewCustomer";
 import Error from "../components/Error";
-import { addCustomer } from "../data/customers";
 
-export async function action({ request }) {
+export async function loader({ params }) {
+  const customer = await getCustomer(params.customerId);
+
+  if(Object.values(customer).length === 0) {
+    throw new Response('', {
+      status: 404,
+      statusText: 'Sin resultados'
+    })
+  } 
+
+  return customer;
+}
+
+export async function action({ request, params }) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   const email = formData.get('email');
@@ -26,20 +39,23 @@ export async function action({ request }) {
     return errors;
   }
 
-  await addCustomer(data);
+  // Actualizar cliente.
+
+  await updateCustomer(params.customerId, data);
 
   return redirect('/');
 }
 
-function NewCustomer() {
+function EditCustomer() {
+  const navigate = useNavigate();
+  const customer = useLoaderData();
   const errors = useActionData();
-  const  navigate = useNavigate();
-  
+
   return (
     <div>
-      <h1 className="font-black text-4xl text-blue-900">Nuevo Cliente</h1>
+      <h1 className="font-black text-4xl text-blue-900">Editar Cliente</h1>
 
-      <p className="mt-3">Llena todos los campos</p>
+      <p className="mt-3">Modifica los datos del cliente</p>
 
       <div className="flex justify-end">
         <button
@@ -57,12 +73,14 @@ function NewCustomer() {
           method="post"
           noValidate
         >
-          <FormNewCustomer />
+          <FormNewCustomer 
+            customer = { customer }
+          />
 
           <input 
             className="mt5 w-full bg-blue-800 p-3 uppercase text-white text-lg"
             type="submit" 
-            value="Registrar Cliente"
+            value="Guardar Cambios"
           />
         </Form>
       </div>
@@ -70,4 +88,4 @@ function NewCustomer() {
   )
 }
 
-export default NewCustomer;
+export default EditCustomer

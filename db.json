@@ -5,14 +5,15 @@
       "name": "Juan",
       "phone": 102013313,
       "email": "juan@juan.com",
-        "company": "Codigo Con Juan"
+      "company": "Codigo Con Juan"
     },
     {
-      "id": 2,
       "name": "Karen",
-      "phone": 138198313,
+      "company": "Codigo Con Juan",
       "email": "karen@juan.com",
-      "company": "Codigo Con Juan"
+      "phone": "138198313",
+      "notes": "Nueva nota",
+      "id": 2
     },
     {
       "id": 3,
