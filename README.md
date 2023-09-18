@@ -1,14 +1,14 @@
 Si tienes probleas para ejecutar scripts para usar la dependencia JSON-Server ejecuta las siguientes lineas de comando dentro del fichero principal del proyecto.
 
-    - Get-ExecutionPolicy -List
+    Get-ExecutionPolicy -List
 
 Seguido de...
     
-    - Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+    Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Para finalmente ejecutar:
 
-    - json-server --watch db.json
+    json-server --watch db.json
 
 <hr>
 
